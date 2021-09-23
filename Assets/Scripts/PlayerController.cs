@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {   
@@ -8,6 +9,10 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     Animator animator;
     Camera cam;
+    #region CollectObjects
+    float MaxCollectables, CurrentCollictables,CollectScore;
+    [SerializeField]TextMeshProUGUI Collecteds;
+    #endregion
 
     #region movementVars
     Rigidbody2D rb;
@@ -59,6 +64,29 @@ public class PlayerController : MonoBehaviour
         else
             PlayerSpeed = 200;
     }
+   
+    void LookAtAndShoot()
+    {
+        Vector3 dir = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position ;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        weapon.transform.rotation = Quaternion.Euler(0,0,angle);
+       
+        if (Input.GetMouseButtonDown(0))
+        {
+            SpawnManager.Instance.SpawnObject(bullet);
+            bullet.transform.position = ShootingPoint.transform.position;
+        }
+    }
+    void Collect(GameObject CollectableObject)
+    {
+        print("Collecting");
+        SpawnManager.Instance.DespawnObject(CollectableObject);
+        CurrentCollictables++;
+        Level1Manager.instance.score += 30;
+        Level1Manager.instance.ChangePsycoHealth(8);
+        Collecteds.text= "Collected: "+CurrentCollictables.ToString() + " / "+MaxCollectables.ToString() ;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         switch (collision.gameObject.tag)
@@ -67,24 +95,51 @@ public class PlayerController : MonoBehaviour
                 print("Grounded");
                 isGrounded = true;
                 break;
-        }
-    }
-    void LookAtAndShoot()
-    {
-        Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        float clampedAngle = Mathf.Clamp(angle, -90,90);
-        weapon.transform.rotation = Quaternion.AngleAxis(clampedAngle, Vector3.forward);
-       
-        if (Input.GetMouseButtonDown(0))
-        {
-            SpawnManager.Instance.SpawnObject(bullet);
-            bullet.transform.position = ShootingPoint.transform.position;
-        }
-    }
-    void Collect()
-    {
 
+            case "Angry":
+                print("anger Joined");
+                if (!collision.gameObject.GetComponent<Angry>().isAnger)
+                {
+                    if (CurrentCollictables >= MaxCollectables)
+                        return;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        Collect(collision.gameObject);
+                        
+                    }
+                }
+                else
+                {
+                    print("is ANger go go go ");
+                    Level1Manager.instance.ChangePsycoHealth(-20);
+                }
+
+                    break;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        switch(collision.gameObject.tag)
+        {
+            case "Angry":
+                if (collision.gameObject.GetComponent<Angry>().isAnger)
+                {
+                    Level1Manager.instance.ChangePsycoHealth(-0.09f);
+                    print("sh76");
+                }
+                else
+                {
+                    print("not sh76");
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        print("collecting");
+                        Collect(collision.gameObject);
+                        Level1Manager.instance.ChangePsycoHealth(20);
+                    }
+                }
+                break;
+        }
     }
 
 

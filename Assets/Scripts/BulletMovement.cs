@@ -12,11 +12,16 @@ public class BulletMovement : MonoBehaviour
     void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
+        Invoke(nameof(Death), 4);
     }
 
     // Update is called once per frame
     void Update()
     {
         rb.velocity = new Vector2(transform.position.x,transform.position.y)* ShootingSpeed * Time.deltaTime;
+    }
+    void Death()
+    {
+        SpawnManager.Instance.DespawnObject(gameObject);
     }
 }

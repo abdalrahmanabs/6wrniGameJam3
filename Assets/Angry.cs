@@ -2,31 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Pathfinding;
+
 
 public class Angry : MonoBehaviour
 {
     [SerializeField] Slider HealthLevel, AngerLevel;
-    public float MaxHealth = 100, damage, MaxAnger = 30, killScore = 30;
+    public float MaxHealth = 100, damage, MaxAnger = 5, killScore = 30;
+    public bool isAnger = false, increaseAnger = true;
+    AIPath aiPath;
+    public Transform StayPos;
+
+    
     // Start is called before the first frame update
     void OnEnable()
     {
+        
         HealthLevel.maxValue = MaxHealth;
         HealthLevel.value = MaxHealth;
 
         AngerLevel.maxValue = MaxAnger;
-        AngerLevel.value = MaxAnger;
+        AngerLevel.value = 0;
+
+        aiPath = GetComponent<AIPath>();
+        aiPath.canMove = isAnger;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         IncreaseAngerLevel();
-        
+     
     }
 
     void IncreaseAngerLevel()
     {
+        
+        if (AngerLevel.value<MaxAnger&&increaseAnger)
+        {
+                AngerLevel.value += Time.deltaTime ;
+          
 
+        }
+        else
+            StartCoroutine(nameof(DecreaseAngerLevel));
+
+
+        if (AngerLevel.value >=MaxAnger)
+            isAnger = true;
+        else
+            isAnger = false;
+        aiPath.canMove = isAnger;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,7 +64,7 @@ public class Angry : MonoBehaviour
                 break;
             case "Bullet":
                 ChangeHealth(-collision.gameObject.GetComponent<BulletMovement>().damage);
-                collision.gameObject.SetActive(false);
+                SpawnManager.Instance.DespawnObject(collision.gameObject);
                 break;
 
         }
@@ -58,5 +85,21 @@ public class Angry : MonoBehaviour
 
 
         gameObject.SetActive(false);
+    }
+
+    IEnumerator DecreaseAngerLevel()
+    {
+        yield return new WaitForSeconds(3);
+        while (AngerLevel.value > 1)
+        {
+            increaseAnger = false;
+            ReturnToStayPos();
+            AngerLevel.value -= Time.deltaTime * 2;
+        }
+        increaseAnger = true;
+    }
+    void ReturnToStayPos()
+    {
+        transform.position = Vector2.Lerp(transform.position, StayPos.position,0.125f);
     }
 }
