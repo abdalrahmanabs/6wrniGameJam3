@@ -38,22 +38,22 @@ public class Angry : MonoBehaviour
 
     void IncreaseAngerLevel()
     {
-        
-        if (AngerLevel.value<MaxAnger&&increaseAnger)
+        if (Vector2.Distance(transform.position, PlayerController.instance.transform.position) < 35)
         {
-                AngerLevel.value += Time.deltaTime ;
-          
+            if (AngerLevel.value < MaxAnger && increaseAnger)
+            {
+                AngerLevel.value += Time.deltaTime;
+            }
+            else
+                StartCoroutine(nameof(DecreaseAngerLevel));
 
+
+            if (AngerLevel.value >= MaxAnger)
+                isAnger = true;
+            else
+                isAnger = false;
+            aiPath.canMove = isAnger;
         }
-        else
-            StartCoroutine(nameof(DecreaseAngerLevel));
-
-
-        if (AngerLevel.value >=MaxAnger)
-            isAnger = true;
-        else
-            isAnger = false;
-        aiPath.canMove = isAnger;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -90,16 +90,21 @@ public class Angry : MonoBehaviour
     IEnumerator DecreaseAngerLevel()
     {
         yield return new WaitForSeconds(3);
+        ReturnToStayPos();
         while (AngerLevel.value > 1)
         {
             increaseAnger = false;
-            ReturnToStayPos();
+           
+            
             AngerLevel.value -= Time.deltaTime * 2;
         }
         increaseAnger = true;
     }
     void ReturnToStayPos()
     {
-        transform.position = Vector2.Lerp(transform.position, StayPos.position,0.125f);
+        transform.position = Vector2.Lerp(transform.position, StayPos.position,1*Time.deltaTime);
     }
+
+
+   
 }

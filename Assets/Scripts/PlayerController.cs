@@ -139,6 +139,9 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 break;
+            case "NegativePlatform":
+                Level1Manager.instance.ChangePsycoHealth(-0.3f);
+                break;
         }
     }
 
