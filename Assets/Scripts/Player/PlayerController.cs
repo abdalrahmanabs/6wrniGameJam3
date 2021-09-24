@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
             case "Angry":
                 print("anger Joined");
                 isGrounded = true;
-                if (!collision.gameObject.GetComponent<Angry>().isAnger)
+                if (!collision.gameObject.GetComponent<Angry>().isFearFull)
                 {
                     if (CurrentCollictables >= MaxCollectables)
                         return;
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Angry":
-                if (collision.gameObject.GetComponent<Angry>().isAnger)
+                if (collision.gameObject.GetComponent<Angry>().isFearFull)
                 {
                     Level1Manager.instance.ChangePsycoHealth(-0.09f);
                     print("sh76");
@@ -173,8 +173,30 @@ public class PlayerController : MonoBehaviour
 
                 Level2Manager.instance.ChanegPsycoHealht(-1.3f);
                 break;
+
+            case "Fear":
+                Time.timeScale = 0.5f;
+                break;
+
+
         }
     }
 
-    
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        switch(collision.gameObject.tag)
+        {
+            case "Fear":
+                EndFear();
+                break;
+        }    
+    }
+
+
+    IEnumerator EndFear()
+    {
+        yield return new WaitForSecondsRealtime(0.8f);
+        Time.timeScale = 1;
+    }
+
 }
