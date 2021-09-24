@@ -12,6 +12,9 @@ TagManager:
   - Environment
   - NegativePlatform
   - Portal
+  - Stoler
+  - Boss
+  - TopBoss
   layers:
   - Default
   - TransparentFX

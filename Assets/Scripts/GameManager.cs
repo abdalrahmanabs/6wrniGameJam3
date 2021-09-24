@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == animationId)
             return;
-        print(animator == null);
+        
         
         animator.Play(animationId);
         CurrentState = animationId;

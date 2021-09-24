@@ -12,7 +12,6 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] TextMeshProUGUI ScoreTxt, winPnlScoreTxt;
     [SerializeField] Slider psycoHealth;
     float _psycoMaxHealht = 100;
-    public float currPsycoHealth;
     private void Awake() => instance = this;
 
     public GameObject WinPnl, LosePnl;
@@ -30,7 +29,7 @@ public class Level1Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currPsycoHealth = psycoHealth.value;
+      
         ScoreTxt.text = "Score: " + score.ToString();
 
         DecreasePsycoHealth();

@@ -4,23 +4,23 @@ using UnityEngine;
 using TMPro;
 
 public class PlayerController : MonoBehaviour
-{   
+{
     [HideInInspector]
     public static PlayerController instance;
     Animator animator;
     Camera cam;
     #region CollectObjects
-    float MaxCollectables, CurrentCollictables,CollectScore;
-    [SerializeField]TextMeshProUGUI Collecteds;
+    float MaxCollectables, CurrentCollictables, CollectScore;
+    [SerializeField] TextMeshProUGUI Collecteds;
     #endregion
 
     #region movementVars
     Rigidbody2D rb;
-    bool isGrounded=true;
+    bool isGrounded = true;
     [SerializeField]
     float PlayerSpeed, JumpSpeed, xAxis;
     #endregion
-   
+
     private void Awake()
     {
         instance = this;
@@ -38,41 +38,41 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        
+
     }
 
     void Move()
     {
-        if(!Level1Manager.instance.isWin)
+        if (!Level2Manager.instance.isWin)
             xAxis = Input.GetAxisRaw("Horizontal");
-       
-            rb.velocity = new Vector2(xAxis * PlayerSpeed*Time.fixedDeltaTime, rb.velocity.y);
-            //jump
-            if(Input.GetAxis("Jump")>0.01&&isGrounded)
-            {
-                print("Jumping");
-                rb.velocity = new Vector2(rb.velocity.x, 1 * Time.fixedDeltaTime * JumpSpeed); ;
-                isGrounded = false;
-            }
+
+        rb.velocity = new Vector2(xAxis * PlayerSpeed * Time.fixedDeltaTime, rb.velocity.y);
+        //jump
+        if (Input.GetAxis("Jump") > 0.01 && isGrounded)
+        {
+            print("Jumping");
+            rb.velocity = new Vector2(rb.velocity.x, 1 * Time.fixedDeltaTime * JumpSpeed); ;
+            isGrounded = false;
+        }
 
 
-            //sprint
-            if (Input.GetKey(KeyCode.LeftShift))
-                PlayerSpeed = 700;
-            else
-                PlayerSpeed = 500;
+        //sprint
+        if (Input.GetKey(KeyCode.LeftShift))
+            PlayerSpeed = 700;
+        else
+            PlayerSpeed = 500;
     }
-   
-   
+
+
     void Collect(GameObject CollectableObject)
     {
-        if(!Level1Manager.instance.isWin)
+        if (!Level1Manager.instance.isWin)
             print("Collecting");
-            SpawnManager.Instance.DespawnObject(CollectableObject);
-            CurrentCollictables++;
-            Level1Manager.instance.score += 30;
-            Level1Manager.instance.ChangePsycoHealth(8);
-            Collecteds.text= "Collected: "+CurrentCollictables.ToString() + " / "+MaxCollectables.ToString() ;
+        SpawnManager.Instance.DespawnObject(CollectableObject);
+        CurrentCollictables++;
+        Level1Manager.instance.score += 30;
+        Level1Manager.instance.ChangePsycoHealth(8);
+        Collecteds.text = "Collected: " + CurrentCollictables.ToString() + " / " + MaxCollectables.ToString();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         Collect(collision.gameObject);
-                        
+
                     }
                 }
                 else
@@ -103,8 +103,9 @@ public class PlayerController : MonoBehaviour
                     Level1Manager.instance.ChangePsycoHealth(-collision.gameObject.GetComponent<Angry>().damage);
                 }
 
-                    break;
+                break;
             case "Portal":
+                Level2Manager.instance.isWin = true;
                 Level1Manager.instance.Win();
                 break;
         }
@@ -112,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        switch(collision.gameObject.tag)
+        switch (collision.gameObject.tag)
         {
             case "Angry":
                 if (collision.gameObject.GetComponent<Angry>().isAnger)
@@ -132,17 +133,48 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case "NegativePlatform":
-                Level1Manager.instance.ChangePsycoHealth(-0.3f);
+                Level2Manager.instance.ChanegPsycoHealht(-0.03f);
                 break;
+
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Portal"))
-            Level1Manager.instance.Win();
+
+      
+        switch(collision.gameObject.tag)
+        {
+            case "Portal":
+                Level2Manager.instance.Win();
+                break;
+            case "Boss":
+                if (collision.gameObject.name != "Boss" || !collision.gameObject.GetComponent<BossController>().isAnger)
+                    return;
+                Level2Manager.instance.ChanegPsycoHealht(-10);
+
+                break;
+        }
+   
 
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        switch (collision.tag)
+        {
+            case "Stoler":
+                Level2Manager.instance.ShowKillDillPnl();
+                Level2Manager.instance.finishParckour = true;
+                break;
+            case "Boss":
+                if (collision.gameObject.name != "Boss"||!collision.gameObject.GetComponent<BossController>().isAnger)
+                    return;
 
+                Level2Manager.instance.ChanegPsycoHealht(-1.3f);
+                break;
+        }
+    }
+
+    
 }
