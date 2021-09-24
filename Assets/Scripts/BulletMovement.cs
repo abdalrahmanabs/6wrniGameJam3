@@ -17,8 +17,8 @@ public class BulletMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        rb.velocity = new Vector2(transform.position.x,transform.position.y)* ShootingSpeed * Time.deltaTime;
+    {   
+        rb.velocity= transform.right * ShootingSpeed * Time.deltaTime ;
     }
     void Death()
     {

@@ -8,27 +8,32 @@ public class Level1Manager : MonoBehaviour
 {
     public static Level1Manager instance;
     public float score;
-    [SerializeField] TextMeshProUGUI ScoreTxt;
+    public bool isWin;
+    [SerializeField] TextMeshProUGUI ScoreTxt, winPnlScoreTxt;
     [SerializeField] Slider psycoHealth;
-    float _psycoMaxHealht=100;
+    float _psycoMaxHealht = 100;
     public float currPsycoHealth;
     private void Awake() => instance = this;
+
+    public GameObject WinPnl, LosePnl;
 
     // Start is called before the first frame update
     void Start()
     {
         psycoHealth.maxValue = _psycoMaxHealht;
         psycoHealth.value = _psycoMaxHealht;
+        isWin = false;
+        LosePnl.gameObject.SetActive(false);
+        WinPnl.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         currPsycoHealth = psycoHealth.value;
-        ScoreTxt.text ="Score: "+ score.ToString();
+        ScoreTxt.text = "Score: " + score.ToString();
 
-        if (currPsycoHealth <= 0)
-            Lost();
+        DecreasePsycoHealth();
     }
 
     public void ChangePsycoHealth(float amount)
@@ -38,6 +43,28 @@ public class Level1Manager : MonoBehaviour
 
     public void Lost()
     {
-        print("sh76 you lost");
+        LosePnl.SetActive(true);
     }
+    void DecreasePsycoHealth()
+    {
+        if (!isWin)
+        {
+            if (psycoHealth.value > 1)
+                psycoHealth.value -= Time.deltaTime;
+            else
+                Lost();
+        }
+    }
+
+
+    public void Win()
+    {
+        WinPnl.SetActive(true);
+        winPnlScoreTxt.text = "Level Score : " + score.ToString("0");
+
+
+    }
+  
+
+    
 }

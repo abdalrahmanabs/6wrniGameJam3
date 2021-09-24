@@ -11,6 +11,7 @@ TagManager:
   - Indifference
   - Environment
   - NegativePlatform
+  - Portal
   layers:
   - Default
   - TransparentFX

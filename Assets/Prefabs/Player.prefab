@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: ShootingPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -40,6 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6761603888480399088}
   - component: {fileID: 5586669263957854376}
+  - component: {fileID: 3633051657499729004}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -113,6 +114,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3633051657499729004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228468026349065035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d139003f186798f469305d9c297f0e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 2628593881807390299, guid: 3304d41f235e68345a9a5547b7a837d1, type: 3}
+  ShootingPoint: {fileID: 9170024110808150726}
 --- !u!1 &6695952897382064985
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,6 +141,7 @@ GameObject:
   - component: {fileID: 6695952897382064981}
   - component: {fileID: 6695952897382064979}
   - component: {fileID: 1371393940422893719}
+  - component: {fileID: 8536903814735845381}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -182,12 +198,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e6a240b41ce014e87e574cfb1db699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Collecteds: {fileID: 0}
   PlayerSpeed: 200
   JumpSpeed: 600
   xAxis: 0
-  bullet: {fileID: 2628593881807390299, guid: 3304d41f235e68345a9a5547b7a837d1, type: 3}
-  ShootingPoint: {fileID: 9170024110808150726}
-  weapon: {fileID: 6761603888480399088}
 --- !u!95 &6695952897382064979
 Animator:
   serializedVersion: 3
@@ -233,6 +247,47 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0249896, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8536903814735845381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6695952897382064985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 0
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.573
+  m_Color: {r: 0.61489856, g: 0.9245283, b: 0.90195215, a: 1}
+  m_Intensity: 1
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 0
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 4
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 4.26
+  m_ShapeLightFalloffSize: 4.05
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &7217853910613455486
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,12 +18,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     bool isGrounded=true;
     [SerializeField]
-    float PlayerSpeed = 200, JumpSpeed, xAxis;
+    float PlayerSpeed, JumpSpeed, xAxis;
     #endregion
-    #region Shooting
-    [SerializeField] GameObject bullet;
-    [SerializeField] Transform ShootingPoint,weapon;
-    #endregion
+   
     private void Awake()
     {
         instance = this;
@@ -41,50 +38,41 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        LookAtAndShoot();
+        
     }
 
     void Move()
     {
-        xAxis = Input.GetAxisRaw("Horizontal");
+        if(!Level1Manager.instance.isWin)
+            xAxis = Input.GetAxisRaw("Horizontal");
        
-        rb.velocity = new Vector2(xAxis * PlayerSpeed*Time.fixedDeltaTime, rb.velocity.y);
-        //jump
-        if(Input.GetAxis("Jump")>0.01&&isGrounded)
-        {
-            print("Jumping");
-            rb.velocity = new Vector2(rb.velocity.x, 1 * Time.fixedDeltaTime * JumpSpeed); ;
-            isGrounded = false;
-        }
+            rb.velocity = new Vector2(xAxis * PlayerSpeed*Time.fixedDeltaTime, rb.velocity.y);
+            //jump
+            if(Input.GetAxis("Jump")>0.01&&isGrounded)
+            {
+                print("Jumping");
+                rb.velocity = new Vector2(rb.velocity.x, 1 * Time.fixedDeltaTime * JumpSpeed); ;
+                isGrounded = false;
+            }
 
 
-        //sprint
-        if (Input.GetKey(KeyCode.LeftShift))
-            PlayerSpeed = 300;
-        else
-            PlayerSpeed = 200;
+            //sprint
+            if (Input.GetKey(KeyCode.LeftShift))
+                PlayerSpeed = 700;
+            else
+                PlayerSpeed = 500;
     }
    
-    void LookAtAndShoot()
-    {
-        Vector3 dir = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position ;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        weapon.transform.rotation = Quaternion.Euler(0,0,angle);
-       
-        if (Input.GetMouseButtonDown(0))
-        {
-            SpawnManager.Instance.SpawnObject(bullet);
-            bullet.transform.position = ShootingPoint.transform.position;
-        }
-    }
+   
     void Collect(GameObject CollectableObject)
     {
-        print("Collecting");
-        SpawnManager.Instance.DespawnObject(CollectableObject);
-        CurrentCollictables++;
-        Level1Manager.instance.score += 30;
-        Level1Manager.instance.ChangePsycoHealth(8);
-        Collecteds.text= "Collected: "+CurrentCollictables.ToString() + " / "+MaxCollectables.ToString() ;
+        if(!Level1Manager.instance.isWin)
+            print("Collecting");
+            SpawnManager.Instance.DespawnObject(CollectableObject);
+            CurrentCollictables++;
+            Level1Manager.instance.score += 30;
+            Level1Manager.instance.ChangePsycoHealth(8);
+            Collecteds.text= "Collected: "+CurrentCollictables.ToString() + " / "+MaxCollectables.ToString() ;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -98,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
             case "Angry":
                 print("anger Joined");
+                isGrounded = true;
                 if (!collision.gameObject.GetComponent<Angry>().isAnger)
                 {
                     if (CurrentCollictables >= MaxCollectables)
@@ -111,10 +100,13 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     print("is ANger go go go ");
-                    Level1Manager.instance.ChangePsycoHealth(-20);
+                    Level1Manager.instance.ChangePsycoHealth(-collision.gameObject.GetComponent<Angry>().damage);
                 }
 
                     break;
+            case "Portal":
+                Level1Manager.instance.Win();
+                break;
         }
     }
 
@@ -143,6 +135,13 @@ public class PlayerController : MonoBehaviour
                 Level1Manager.instance.ChangePsycoHealth(-0.3f);
                 break;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Portal"))
+            Level1Manager.instance.Win();
+
     }
 
 
