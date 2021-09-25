@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Level3Manager : MonoBehaviour
 {
     public static Level3Manager instance;
     public float score;
-    [SerializeField] TextMeshProUGUI ScoreTxt, winPnlScoreTxt;
+    [SerializeField] TextMeshProUGUI ScoreTxt;
     [SerializeField] Slider psycoHealth;
     public float _psycoMaxHealht ;
     private void Awake() => instance = this;
@@ -35,6 +35,7 @@ public class Level3Manager : MonoBehaviour
     }
     public void Win()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         GameManager.instance.isWin=true;
         WinPnl.gameObject.SetActive(true) ;
         print("you win");

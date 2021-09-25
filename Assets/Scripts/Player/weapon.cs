@@ -29,6 +29,7 @@ public class weapon : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Instantiate(bullet, ShootingPoint.position, transform.rotation);
+                GameManager.instance.PlaySound((int)GameManager.fx.shoot);
 
             }
         }

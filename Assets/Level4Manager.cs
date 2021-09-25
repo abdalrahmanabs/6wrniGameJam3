@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class Level4Manager : MonoBehaviour
 {
     public static Level4Manager instance;
@@ -34,6 +35,7 @@ public class Level4Manager : MonoBehaviour
 
     public void Win()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         GameManager.instance.isWin = true;
         WinPnl.gameObject.SetActive(true);
         print("you win");

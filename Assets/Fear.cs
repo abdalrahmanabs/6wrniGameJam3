@@ -152,6 +152,7 @@ public class Fear : MonoBehaviour
 
     void Death()
     {
+        GameManager.instance.PlaySound((int)GameManager.fx.die);
         GameManager.instance.TotalScore += killScore;
         Level3Manager.instance.score += killScore;
 

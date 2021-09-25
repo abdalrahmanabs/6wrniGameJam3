@@ -663,7 +663,7 @@ MonoBehaviour:
   HealthLevel: {fileID: 4742605061904684716}
   FearLevel: {fileID: 4742605062593372532}
   MaxHealth: 100
-  damage: 10
+  damage: 20
   MaxFear: 3
   killScore: 30
   isFear: 0

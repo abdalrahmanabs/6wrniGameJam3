@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         camera = Camera.main;
         DefaultRigidBodyGravity = rb.gravityScale;
+        rb.gravityScale = DefaultCamSize;
     }
 
     // Update is called once per frame
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetAxis("Jump") > 0.01 && isGrounded)
             {
                 print("Jumping");
+                GameManager.instance.PlaySound((int)GameManager.fx.jump);
                 rb.velocity = new Vector2(rb.velocity.x, 1 * Time.fixedDeltaTime * JumpSpeed); ;
                 isGrounded = false;
             }
@@ -276,7 +278,7 @@ public class PlayerController : MonoBehaviour
             case "Boss":
                 if (collision.gameObject.name != "Boss" || !collision.gameObject.GetComponent<BossController>().isAnger)
                     return;
-                Level2Manager.instance.ChanegPsycoHealht(-collision.gameObject.GetComponent<Fear>().damage);
+                Level2Manager.instance.ChanegPsycoHealht(-collision.gameObject.GetComponent<BossController>().damage);
 
                 break;
             case "Fear":
@@ -300,6 +302,7 @@ public class PlayerController : MonoBehaviour
         {
             case "Pickup":
                 GameObject obj = collision.gameObject;
+               
                 print("Joined your channel");
                 if (Input.GetMouseButton(1))
                 {
@@ -366,14 +369,14 @@ public class PlayerController : MonoBehaviour
 
     void Pickup(ref GameObject obj)
     {
-
+        GameManager.instance.PlaySound((int)GameManager.fx.hold);
         obj.GetComponentInParent<Rigidbody2D>().gameObject.transform.SetParent(transform);
         obj.GetComponentInParent<Rigidbody2D>().isKinematic = true;
         rb.gravityScale = DefaultRigidBodyGravity + 1;
     }
     void drop(ref GameObject obj)
     {
-
+        GameManager.instance.PlaySound((int)GameManager.fx.hold);
         obj.GetComponentInParent<Rigidbody2D>().gameObject.transform.SetParent(null);
         obj.GetComponentInParent<Rigidbody2D>().isKinematic = false;
         rb.gravityScale = DefaultRigidBodyGravity;

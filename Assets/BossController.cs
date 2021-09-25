@@ -111,6 +111,8 @@ public class BossController : MonoBehaviour
 
     void Death()
     {
+        GameManager.instance.PlaySound((int)GameManager.fx.die);
+
         GameManager.instance.TotalScore += killScore;
         Level2Manager.instance.score += killScore;
        // Level2Manager.instance.isWin = true;

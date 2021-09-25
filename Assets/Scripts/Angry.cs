@@ -85,7 +85,7 @@ public class Angry : MonoBehaviour
 
         PlayAnimation = true;
 
-        if (Vector2.Distance(transform.position, PlayerController.instance.transform.position) < 35)
+        if (Vector2.Distance(transform.position, PlayerController.instance.transform.position) < 40)
         {
             if (AngerLevel.value < MaxAnger && increaseAnger)
             {
@@ -149,6 +149,7 @@ public class Angry : MonoBehaviour
 
     void Death()
     {
+        GameManager.instance.PlaySound((int)GameManager.fx.die);
         GameManager.instance.TotalScore += killScore;
         Level1Manager.instance.score += killScore;
 
