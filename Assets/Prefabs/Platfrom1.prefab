@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5332903187486424315}
   - component: {fileID: 5332903187486424314}
   - component: {fileID: 3841206684181519072}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platfrom1
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7389213401987604937}
   - component: {fileID: 558062531031169471}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform_Blue_Wide
   m_TagString: Untagged
   m_Icon: {fileID: 0}

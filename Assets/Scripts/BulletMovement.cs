@@ -15,7 +15,7 @@ public class BulletMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         Invoke(nameof(Death), 4);
         if (SceneManager.GetActiveScene().name == "Level 2")
-            ShootingSpeed *= 3;
+            ShootingSpeed *=1.5f;
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class BulletMovement : MonoBehaviour
     }
     void Death()
     {
-        SpawnManager.Instance.DespawnObject(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

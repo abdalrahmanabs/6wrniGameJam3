@@ -10,7 +10,7 @@ public class Level2Manager : MonoBehaviour
     public float ParckourTimer,score;
     public TextMeshProUGUI parkourTxt;
     public GameObject LosePnl, WinPnl, KillDillPnl, killMessegePnl, DillMessegePnl;
-    public bool isWin = false;
+  
     public GameObject Portal,Boss;
     public  Slider psycoHealth;
     [SerializeField] float _psycoMaxHealht ;
@@ -33,6 +33,7 @@ public class Level2Manager : MonoBehaviour
         psycoHealth.gameObject.SetActive(false);
         LosePnl.gameObject.SetActive(false);
         WinPnl.gameObject.SetActive(false);
+        GameManager.instance.isWin = false;
         KillDillPnl.gameObject.SetActive(false);
     }
 
@@ -65,7 +66,7 @@ public class Level2Manager : MonoBehaviour
     {
         print("NOONONONONONONONONOONO");
         LosePnl.SetActive(true);
-        isWin = true;//acutaly its not but i enabled it just for stop player movement
+        GameManager.instance.isWin = true;//acutaly its not but i enabled it just for stop player movement
     }
 
     public void ShowKillDillPnl()

@@ -644,6 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a667fccd6655844b7d1ac6b7fcb691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isWin: 0
   TotalScore: 0
 --- !u!4 &153069907
 Transform:
@@ -2333,7 +2334,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.2
+  m_fontSize: 35.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2440,11 +2441,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
-  isWin: 0
   ScoreTxt: {fileID: 2059265044}
   winPnlScoreTxt: {fileID: 122607281}
   psycoHealth: {fileID: 692896222}
-  currPsycoHealth: 0
   WinPnl: {fileID: 1722979544}
   LosePnl: {fileID: 1510403631}
 --- !u!1001 &756315747
@@ -5814,7 +5813,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.2
+  m_fontSize: 35.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

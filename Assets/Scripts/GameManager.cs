@@ -6,16 +6,20 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    bool isCreated = false;
-
+  
+    public bool isWin;
     public float TotalScore;
 
     private void Awake()
     {
-        if (!isCreated)
-            instance = this;
+
+        if (instance!=null)
+            Destroy(this);
         else
-            Destroy(gameObject);
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
             
     }
     // Start is called before the first frame update
@@ -48,9 +52,15 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneName);
     }
+    public void PlaySound()
+    {
+
+    }
 
     public void ReloadLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+  
 }

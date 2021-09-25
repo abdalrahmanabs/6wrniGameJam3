@@ -5,37 +5,36 @@ using UnityEngine.UI;
 using Pathfinding;
 
 
+public enum AnimationsIDs
+{
+    idle = 0, Angry = 1
+}
 
 public class Angry : MonoBehaviour
 {
-    public enum Animations
-    {
-        idle = 0, Angry = 1
-    }
-
-    [SerializeField] Slider HealthLevel, FearLevel;
-    public float MaxHealth = 100, damage, MaxAnger , killScore = 30,waitTime;
-    public bool isFearFull = false, increaseFear = true;
+    [SerializeField] Slider HealthLevel, AngerLevel;
+    public float MaxHealth = 100, damage, MaxAnger, killScore = 30, waitTime;
+    public bool isAnger = false, increaseAnger = true;
     AIPath aiPath;
-   
+    public Transform StayPos;
     bool PlayAnimation;
     Animator anim;
     string CurrentState = "";
     string[] AnimationsNames = new string[2] { "idle 0", "Angry" };
 
-    
+
     // Start is called before the first frame update
     void OnEnable()
     {
-        
+
         HealthLevel.maxValue = MaxHealth;
         HealthLevel.value = MaxHealth;
 
-        FearLevel.maxValue = MaxAnger;
-        FearLevel.value = 0;
+        AngerLevel.maxValue = MaxAnger;
+        AngerLevel.value = 0;
 
         aiPath = GetComponent<AIPath>();
-        aiPath.canMove = isFearFull;
+        aiPath.canMove = isAnger;
 
         anim = GetComponent<Animator>();
 
@@ -45,7 +44,7 @@ public class Angry : MonoBehaviour
     void Update()
     {
         IncreaseAngerLevel();
-     
+
     }
 
     //void IncreaseAngerLevel()
@@ -80,52 +79,55 @@ public class Angry : MonoBehaviour
 
     void IncreaseAngerLevel()
     {
-        aiPath.canMove = isFearFull;
+        aiPath.canMove = isAnger;
 
-        print("increase State is _" + increaseFear);
+        print("increase State is _" + increaseAnger);
 
         PlayAnimation = true;
-        if (FearLevel.value < MaxAnger && increaseFear)
+
+        if (Vector2.Distance(transform.position, PlayerController.instance.transform.position) < 35)
         {
-            print("sh76 Increasing anger Level");
-            GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.idle], ref CurrentState);
-            if (!increaseFear)
-                return;
-            else
+            if (AngerLevel.value < MaxAnger && increaseAnger)
             {
-
-                FearLevel.value += Time.deltaTime;
-            }
-
-
-        }
-        else if (FearLevel.value >= MaxAnger || !increaseFear)
-        {
-
-            isFearFull = true;
-
-            GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.Angry], ref CurrentState);
-            increaseFear = false;
-            if (FearLevel.value >= 0.1f)
-                FearLevel.value -= Time.deltaTime;
-
-            else
-            {
-                print("Shit");
-                increaseFear = true;
+                print("sh76 Increasing anger Level");
                 GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.idle], ref CurrentState);
-                isFearFull = false;
-                
+                if (!increaseAnger)
+                    return;
+                else
+                {
+
+                    AngerLevel.value += Time.deltaTime;
+                }
+
+
             }
+            else if (AngerLevel.value >= MaxAnger || !increaseAnger)
+            {
+
+                isAnger = true;
+
+                GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.Angry], ref CurrentState);
+                increaseAnger = false;
+                if (AngerLevel.value >= 0.1f)
+                    AngerLevel.value -= Time.deltaTime;
+
+                else
+                {
+                    print("Shit");
+                    increaseAnger = true;
+                    GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.idle], ref CurrentState);
+                    isAnger = false;
+                    ReturnToStayPos();
+                }
+            }
+
+            else
+                PlayAnimation = false;
         }
-
-        else
-            PlayAnimation = false;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        switch(collision.tag)
+        switch (collision.tag)
         {
             case "Player":
                 break;
@@ -154,8 +156,26 @@ public class Angry : MonoBehaviour
         gameObject.SetActive(false);
     }
 
- 
-  
+    IEnumerator DecreaseAngerLevel()
+    {
+        yield return new WaitForSeconds(waitTime);
+        if (PlayAnimation)
+            GameManager.instance.PlayAnimation(anim, AnimationsNames[(int)AnimationsIDs.idle], ref CurrentState);
+        ReturnToStayPos();
+        while (AngerLevel.value > 1)
+        {
+            increaseAnger = false;
 
-   
+
+            AngerLevel.value -= Time.deltaTime * 2;
+        }
+        increaseAnger = true;
+    }
+    void ReturnToStayPos()
+    {
+        transform.position = Vector2.Lerp(transform.position, StayPos.position, 1 * Time.deltaTime);
+    }
+
+
+
 }

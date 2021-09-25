@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8453857177047394436}
   - component: {fileID: 5274587093375404530}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform_Pink_Wide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4438034514483423523}
   - component: {fileID: 4438034514483423453}
   - component: {fileID: 2831190463313883394}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NegativePlatform (1)
   m_TagString: NegativePlatform
   m_Icon: {fileID: 0}
