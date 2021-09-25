@@ -17,6 +17,7 @@ TagManager:
   - TopBoss
   - MovingPlatform
   - Pickup
+  - SaveOrHafe
   layers:
   - Default
   - TransparentFX

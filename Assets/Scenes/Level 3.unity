@@ -2625,7 +2625,7 @@ MonoBehaviour:
   ScoreTxt: {fileID: 2059265044}
   winPnlScoreTxt: {fileID: 122607281}
   psycoHealth: {fileID: 692896222}
-  _psycoMaxHealht: 200
+  _psycoMaxHealht: 150
   WinPnl: {fileID: 1722979544}
   LosePnl: {fileID: 1510403631}
 --- !u!1 &763721376

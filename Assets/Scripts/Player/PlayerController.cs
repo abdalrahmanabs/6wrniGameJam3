@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     float DefaultRigidBodyGravity = 0;
     float DefaultCamSize, maxCamSize;
     Camera camera;
-    bool isZoomed=false,isZoomedFinished=false;
-   [SerializeField] CinemachineVirtualCamera cam;
+    bool isZoomed = false, isZoomedFinished = false;
+    [SerializeField] CinemachineVirtualCamera cam;
     #region CollectObjects
     float MaxCollectables, CurrentCollictables, CollectScore;
     [SerializeField] TextMeshProUGUI Collecteds;
@@ -31,12 +31,13 @@ public class PlayerController : MonoBehaviour
         instance = this;
         //DefaultCamSize = cam.m_Lens.OrthographicSize;
         switch (SceneManager.GetActiveScene().name)
-        { case "Level 1":maxCamSize = DefaultCamSize + 5; break;
+        {
+            case "Level 1": maxCamSize = DefaultCamSize + 5; break;
             case "Level 2": maxCamSize = DefaultCamSize + 9; break;
-            case "Level 3": maxCamSize = DefaultCamSize +5  ; break;
+            case "Level 3": maxCamSize = DefaultCamSize + 5; break;
             case "Level 4": maxCamSize = DefaultCamSize + 8; break;
         }
-        
+
     }
 
 
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        camera= Camera.main;
+        camera = Camera.main;
         DefaultRigidBodyGravity = rb.gravityScale;
     }
 
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour
         //        zoomOut();
         //}
 
-      
+
 
     }
 
@@ -100,7 +101,7 @@ public class PlayerController : MonoBehaviour
                 PlayerSpeed = 500;
         }
     }
-    
+
 
 
     float t;
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
         //Cam size
         cam.m_Lens.OrthographicSize = Mathf.Lerp(cam.m_Lens.OrthographicSize, maxCamSize, t);
 
-   
+
         // is animation over ?
         if (t >= 1)
         {
@@ -179,17 +180,18 @@ public class PlayerController : MonoBehaviour
                     case "Level 1": Level1Manager.instance.Win(); break;
                     case "Level 2": Level2Manager.instance.Win(); break;
                     case "Level 3": Level3Manager.instance.Win(); break;
+                    case "Level 4": Level4Manager.instance.Win(); break;
                 }
 
                 break;
 
-            
+
 
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        switch(collision.gameObject.tag)
+        switch (collision.gameObject.tag)
         {
             case "MovingPlatform":
                 print("closing platforms ");
@@ -221,16 +223,33 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case "NegativePlatform":
-                Level2Manager.instance.ChanegPsycoHealht(-0.03f);
+                switch (SceneManager.GetActiveScene().name)
+                {
+                    case "Level 2":
+                        Level2Manager.instance.ChanegPsycoHealht(-0.5f); break;
+                    case "Level 1":
+                        Level1Manager.instance.ChangePsycoHealth(-0.5f); break;
+                    case "Level 3 ":
+                        Level3Manager.instance.ChangePsycoHealth(-0.5f); break;
+                    case "Level 4 ":
+                        Level4Manager.instance.ChangePsycoHealth(-0.5f); break;
+                }
                 break;
             case "Fear":
-                Level3Manager.instance.ChangePsycoHealth(-0.5f);
+                switch (SceneManager.GetActiveScene().name)
+                {
+
+                    case "Level 3 ":
+                        Level3Manager.instance.ChangePsycoHealth(-0.5f); break;
+                    case "Level 4 ":
+                        Level4Manager.instance.ChangePsycoHealth(-0.5f); break;
+                }
                 break;
             case "MovingPlatform":
                 isGrounded = true;
                 transform.parent = collision.gameObject.transform;
                 break;
-           
+
 
                 break;
 
@@ -251,6 +270,7 @@ public class PlayerController : MonoBehaviour
                     case "Level 1": Level1Manager.instance.Win(); break;
                     case "Level 2": Level2Manager.instance.Win(); break;
                     case "Level 3": Level3Manager.instance.Win(); break;
+                    case "Level 4": Level4Manager.instance.Win(); break;
                 }
                 break;
             case "Boss":
@@ -263,6 +283,11 @@ public class PlayerController : MonoBehaviour
                 Time.timeScale = 0.5f;
                 Time.fixedDeltaTime = Time.timeScale * 0.02f;
                 break;
+            case "SaveOrHafe":
+                Level4Manager.instance.SaveHafePnl.SetActive(true);
+                Time.timeScale = 0;
+                collision.gameObject.SetActive(false);
+                break; ;
 
         }
 
@@ -274,7 +299,7 @@ public class PlayerController : MonoBehaviour
         switch (collision.tag)
         {
             case "Pickup":
-                GameObject obj= collision.gameObject;
+                GameObject obj = collision.gameObject;
                 print("Joined your channel");
                 if (Input.GetMouseButton(1))
                 {
@@ -305,9 +330,15 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case "Fear":
-                Level3Manager.instance.ChangePsycoHealth(-0.5f);
+                switch (SceneManager.GetActiveScene().name)
+                {
+                    case "Level 3 ":
+                        Level3Manager.instance.ChangePsycoHealth(-0.5f); break;
+                    case "Level 4 ":
+                        Level4Manager.instance.ChangePsycoHealth(-0.5f); break;
+                }
                 break;
-            
+
         }
     }
 
@@ -337,7 +368,7 @@ public class PlayerController : MonoBehaviour
     {
 
         obj.GetComponentInParent<Rigidbody2D>().gameObject.transform.SetParent(transform);
-        obj.GetComponentInParent<Rigidbody2D>().isKinematic = true ;
+        obj.GetComponentInParent<Rigidbody2D>().isKinematic = true;
         rb.gravityScale = DefaultRigidBodyGravity + 1;
     }
     void drop(ref GameObject obj)
@@ -345,8 +376,8 @@ public class PlayerController : MonoBehaviour
 
         obj.GetComponentInParent<Rigidbody2D>().gameObject.transform.SetParent(null);
         obj.GetComponentInParent<Rigidbody2D>().isKinematic = false;
-        rb.gravityScale = DefaultRigidBodyGravity ;
+        rb.gravityScale = DefaultRigidBodyGravity;
     }
 
-    
+
 }
